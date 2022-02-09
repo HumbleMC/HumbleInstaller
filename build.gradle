@@ -1,0 +1,38 @@
+import java.text.SimpleDateFormat
+
+plugins {
+    id 'java'
+    id "com.github.johnrengelman.shadow" version "7.1.2"
+}
+
+group 'cn.enaium.humblemc'
+version '1.0.0'
+
+targetCompatibility = sourceCompatibility = JavaVersion.VERSION_1_8
+
+jar {
+    manifest.attributes(
+            'Manifest-Version': 1.0,
+            'Main-Class': 'cn.enaium.humblemc.installer.Main',
+            "Implementation-Title": "${project.name}",
+            "Implementation-Version": "${project.version}",
+            "Implementation-Vendor": "${project.group}",
+            "Implementation-Timestamp": new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())
+    )
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.google.code.gson:gson:2.8.9'
+}
+
+shadowJar {
+    dependencies {
+        include(dependency('com.google.code.gson:gson'))
+    }
+}
+
+build.dependsOn shadowJar
